@@ -1,0 +1,35 @@
+{
+  "name": "boilerplate-mongoose-api",
+  "version": "0.1.0",
+  "description": "Yet another basic express / mongoose REST API boilerplate",
+  "homepage": "https://techcoop.github.io/boilerplate-mongoose-api",
+  "author": "colingagnon",
+  "license": "MIT",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techcoop/boilerplate-mongoose-api.git"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "build/",
+    "src/"
+  ],
+  "keywords": [
+    "techcoop",
+    "mongoose",
+    "express",
+    "REST",
+    "API",
+    "boilerplate"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "standard-version": "^4.0.0"
+  },
+  "scripts": {
+  }
+}
