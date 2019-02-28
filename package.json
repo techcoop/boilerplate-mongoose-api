@@ -1,6 +1,6 @@
 {
   "name": "boilerplate-mongoose-api",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Yet another basic mongoose REST API boilerplate",
   "homepage": "https://techcoop.github.io/boilerplate-mongoose-api",
   "author": "colingagnon",
