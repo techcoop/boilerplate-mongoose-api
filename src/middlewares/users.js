@@ -1,3 +1,5 @@
+'use strict'
+
 const User = require('../modules/users').User
 
 const validateUser = async (decoded, request, h) => {
@@ -5,7 +7,9 @@ const validateUser = async (decoded, request, h) => {
     return { isValid: false }
   }
   
-  decoded.scope = decoded.scope.split(' ')
+  if (decoded.scope) {
+    decoded.scope = decoded.scope.split(' ')
+  }
 
   // Get user id from local database with sub, or create
   let user = await User.findOne({ 'subs': decoded.sub }).exec()
@@ -14,7 +18,7 @@ const validateUser = async (decoded, request, h) => {
   }
   
   // If we have a _user parameter in request, ensure that this user is the owner
-  if (request.params && request.params._user && request.params._user !== user._id.toString()) {
+  if (request && request.params && request.params._user && request.params._user !== user._id.toString()) {
     const response = h.response({ statusCode: 401, message: 'Invalid ownership of resource' }).code(401)
     return { isValid: false, response: response }
   }

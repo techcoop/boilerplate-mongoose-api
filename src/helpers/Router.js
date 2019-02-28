@@ -94,32 +94,12 @@ class Router {
   }
 
   async patchHandler(request, h) {
-    // TODO enforce ACL / auth
     return this.Model.findByIdAndUpdate(request.params.id, request.payload, {new: true})
   }
 
   async deleteHandler(request, h) {
-    // TODO enforce ACL / auth
     await this.Model.findByIdAndDelete(request.params.id)
     return h.response().code(204)
-  }
-  
-  makePublic(types) {
-    types.forEach((type) => {
-      this.makeRoutePublic(type)
-    })
-  }
-
-  makePrivate(types) {
-    types.forEach((type) => {
-      this.makeRoutePrivate(type)
-    })
-  }
-
-  makeScoped(types, scope) {
-    types.forEach((type) => {
-      this.makeRouteScoped(type, scope)
-    })
   }
   
   makeRoutePublic(type) {
@@ -140,6 +120,24 @@ class Router {
     }
   }
 
+  makePublic(types) {
+    types.forEach((type) => {
+      this.makeRoutePublic(type)
+    })
+  }
+
+  makePrivate(types) {
+    types.forEach((type) => {
+      this.makeRoutePrivate(type)
+    })
+  }
+
+  makeScoped(types, scope) {
+    types.forEach((type) => {
+      this.makeRouteScoped(type, scope)
+    })
+  }
+  
   route(type, route) {
     if (type && route) {
       this._routes[type] = route

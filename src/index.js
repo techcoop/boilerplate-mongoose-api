@@ -2,7 +2,7 @@
 
 require('./config')
 const mongoose = require('mongoose')
-const { server, startServer } = require('./server')
+const { createServer } = require('./server')
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useFindAndModify: false })
 
@@ -12,6 +12,12 @@ const routes = [].concat(
   require('./modules/products').ProductRouter.routes()
 )
 
+let server
+const start = async () => {
+  server = await createServer(routes)
+  console.log('Server running at:', server.info.uri)
+}
 
+start()
 
-startServer(routes)
+module.exports = server

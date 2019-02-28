@@ -6,8 +6,16 @@ const SchemaStatics = require('../helpers/SchemaStatics')
 const Router = require('../helpers/Router')
 
 const UserProductSchema = new Schema({
-  _user: { type: Schema.Types.ObjectId, ref: 'User' },
-  _product: { type: Schema.Types.ObjectId, ref: 'Product' },
+  _user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  _product: {
+    type: Schema.Types.ObjectId,
+    ref: 'Product',
+    required: true
+  },
   price: {
     type: Number,
     required: true

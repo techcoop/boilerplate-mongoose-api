@@ -2,14 +2,14 @@
 
 const hapi = require('hapi')
 const jwksRsa = require('jwks-rsa')
-const validateUser = require('./utils/users').validateUser
+const validateUser = require('./middlewares/users').validateUser
 
-const server = hapi.server({
-  host: process.env.HOST,
-  port: process.env.PORT
-})
+const createServer = async function(routes = [], startServer = true) {
+  const server = hapi.server({
+    host: process.env.HOST,
+    port: process.env.PORT
+  })
 
-const startServer = async function(routes) {
   // Enable logging
   await server.register({
     plugin: require('hapi-pino'),
@@ -28,11 +28,11 @@ const startServer = async function(routes) {
       cache: true,
       rateLimit: true,
       jwksRequestsPerMinute: 5,
-      jwksUri: 'https://detecht.auth0.com/.well-known/jwks.json'
+      jwksUri: process.env.AUTH0_JWKS
     }),
     verifyOptions: {
-      audience: 'https://api.detecht.co',
-      issuer: 'https://detecht.auth0.com/',
+      audience: process.env.AUTH0_AUDIENCE,
+      issuer: process.env.AUTH0_ISSUER,
       algorithms: ['RS256']
     },
     validate: validateUser,
@@ -44,15 +44,17 @@ const startServer = async function(routes) {
   // Apply routes to server
   server.route(routes)
 
-  // Start server
-  try {
-    await server.start()
-  } catch (err) {
-    console.log(err)
-    process.exit(1)
+  if (startServer) {
+    // Start server
+    try {
+      await server.start()
+    } catch (err) {
+      if (process.env.NODE_ENV !== 'test') {
+        console.log(err)
+      }
+    }
   }
-
-  console.log('Server running at:', server.info.uri)
+  return server
 }
 
-module.exports = {startServer, server}
+module.exports = { createServer }
