@@ -1,7 +1,7 @@
 {
   "name": "boilerplate-mongoose-api",
   "version": "0.0.0",
-  "description": "Yet another basic mongoose REST API boilerplate",
+  "description": "Yet another basic mongoose REST API boilerplate, with Auth0 JWT",
   "homepage": "https://techcoop.github.io/boilerplate-mongoose-api",
   "author": "colingagnon",
   "license": "MIT",
