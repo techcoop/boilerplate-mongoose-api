@@ -1,7 +1,7 @@
 {
   "name": "boilerplate-mongoose-api",
-  "version": "0.1.0",
-  "description": "Yet another basic express / mongoose REST API boilerplate",
+  "version": "0.0.0",
+  "description": "Yet another basic mongoose REST API boilerplate, with Auth0 JWT",
   "homepage": "https://techcoop.github.io/boilerplate-mongoose-api",
   "author": "colingagnon",
   "license": "MIT",
@@ -13,23 +13,35 @@
   "files": [
     "LICENSE",
     "README.md",
-    "build/",
     "src/"
   ],
   "keywords": [
     "techcoop",
     "mongoose",
-    "express",
+    "hapi",
     "REST",
     "API",
     "boilerplate"
   ],
   "dependencies": {
+    "dotenv": "^6.2.0",
+    "hapi": "^18.1.0",
+    "hapi-auth-jwt2": "^8.3.0",
+    "hapi-pino": "^5.4.1",
+    "joi": "^14.3.1",
+    "jwks-rsa": "^1.4.0",
+    "mongodb-memory-server": "^3.1.1",
+    "mongoose": "^5.4.14"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
+    "code": "^5.2.4",
+    "lab": "^18.0.2",
+    "nodemon": "^1.18.10",
     "standard-version": "^4.0.0"
   },
   "scripts": {
+    "start": "nodemon src/index.js --watch src",
+    "test": "nodemon --exec yarn test:run --watch src",
+    "test:run": "lab src --pattern test --assert code --leaks"
   }
 }
