@@ -1,5 +1,5 @@
 # boilerplate-mongoose-api
-Yet another basic express / mongoose REST API boilerplate with auth0 JWT
+Yet another basic mongoose REST API boilerplate with auth0 JWT and hapi
 
 # Requirements
 * Node >= 8.0.0
