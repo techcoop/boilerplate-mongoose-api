@@ -1,6 +1,6 @@
 'use strict'
 
-const User = require('../modules/users').User
+const User = require('../resources/users').User
 
 const validateUser = async (decoded, request, h) => {
   if (!decoded || !decoded.sub) {

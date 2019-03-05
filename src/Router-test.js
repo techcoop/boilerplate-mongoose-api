@@ -3,10 +3,10 @@
 const Lab = require('lab')
 const lab = (exports.lab = Lab.script())
 const expect = require('Code').expect
-const { mockDB, h } = require('../../testUtils')
+const { mockDB, h } = require('../testUtils')
 
 const Router = require('./Router')
-const { User } = require('../modules/users')
+const { User } = require('./resources/users')
 
 lab.experiment('Router', () => {
   lab.before(async () => {

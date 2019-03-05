@@ -6,7 +6,7 @@ const expect = require('Code').expect
 const { mockDB, h } = require('../../testUtils')
 
 const { validateUser } = require('./users')
-const { User } = require('../modules/users')
+const { User } = require('../resources/users')
 
 lab.experiment('validateUser', async () => {
   lab.before(async () => {

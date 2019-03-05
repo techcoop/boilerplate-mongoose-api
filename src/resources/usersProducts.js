@@ -2,8 +2,8 @@
 
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const SchemaStatics = require('../helpers/SchemaStatics')
-const Router = require('../helpers/Router')
+const SchemaStatics = require('../SchemaStatics')
+const Router = require('../Router')
 
 const UserProductSchema = new Schema({
   _user: {
