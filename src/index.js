@@ -7,9 +7,9 @@ const { createServer } = require('./server')
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useFindAndModify: false })
 
 const routes = [].concat(
-  require('./modules/users').UserRouter.routes(),
-  require('./modules/usersProducts').UserProductRouter.routes(),
-  require('./modules/products').ProductRouter.routes()
+  require('./resources/users').UserRouter.routes(),
+  require('./resources/usersProducts').UserProductRouter.routes(),
+  require('./resources/products').ProductRouter.routes()
 )
 
 let server
