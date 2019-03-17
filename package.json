@@ -27,11 +27,13 @@
     "dotenv": "^6.2.0",
     "hapi": "^18.1.0",
     "hapi-auth-jwt2": "^8.3.0",
+    "hapi-pagination": "^2.1.0",
     "hapi-pino": "^5.4.1",
     "joi": "^14.3.1",
     "jwks-rsa": "^1.4.0",
     "mongodb-memory-server": "^3.1.1",
-    "mongoose": "^5.4.14"
+    "mongoose": "^5.4.14",
+    "mongoose-paginate-v2": "^1.0.24"
   },
   "devDependencies": {
     "code": "^5.2.4",

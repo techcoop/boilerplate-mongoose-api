@@ -73,7 +73,16 @@ class Router {
   }
 
   async getListHandler(request, h) {
-    return this.Model.list(request.query).exec()
+    const { limit, page, pagination, ...rest } = request.query
+    if (pagination) {
+      // TODO add handling for other options? populate, lean, etc?
+      // https://github.com/WebGangster/mongoose-paginate-v2
+      const results = await this.Model.paginate(rest, {limit, page})
+      return h.response({results: results.docs, totalCount: results.totalDocs});
+    } else {
+      // TODO leave this? paginate will be set for all routes anyways?
+      return await this.find(rest)
+    }
   }
 
   async getOneHandler(request, h) {
