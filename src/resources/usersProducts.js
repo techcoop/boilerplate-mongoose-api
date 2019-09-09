@@ -1,8 +1,8 @@
 'use strict'
 
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 const Schema = mongoose.Schema
-const SchemaStatics = require('../SchemaStatics')
 const Router = require('../Router')
 
 const UserProductSchema = new Schema({
@@ -30,7 +30,7 @@ const UserProductSchema = new Schema({
   },
 }, { collection: 'user_products' })
 
-UserProductSchema.statics = Object.assign({}, SchemaStatics)
+UserProductSchema.plugin(mongoosePaginate)
 
 const UserProduct = mongoose.model('UserProduct', UserProductSchema)
 const UserProductRouter = new Router(UserProduct, '/users/{_user}/products')

@@ -1,23 +1,55 @@
 'use strict'
 
-const hapi = require('hapi')
+const hapi = require('@hapi/hapi')
 const jwksRsa = require('jwks-rsa')
 const validateUser = require('./middlewares/users').validateUser
 
-const createServer = async function(routes = [], startServer = true) {
-  const server = hapi.server({
-    host: process.env.HOST,
-    port: process.env.PORT
-  })
+const paginationOptions = {
+  query: {
+    page: {name: 'page', default: 1},
+    limit: {name: 'limit', default: 5}
+  },
+  meta: {
+    location: 'header'
+  },
+  routes: {
+    include: [
+      '*',
+      // Instead of * you can enable pagination by route pattern
+      //'/users',
+      //'/products',
+      //'/users/{_user}/products'
+    ],
+    exclude: []
+  }
+}
 
+const createServer = () => {
+  return hapi.server({
+    host: process.env.HOST,
+    port: process.env.PORT,
+    routes: {
+      cors: {
+        origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : undefined,
+        additionalExposedHeaders: ['Content-Range', 'Link'],
+        additionalHeaders: ['Content-Range', 'Link']
+      }
+    }
+  })
+}
+
+const startServer = async function(routes = [], server = createServer(), startServer = true) {
   // Enable logging
   await server.register({
     plugin: require('hapi-pino'),
     options: {
-        prettyPrint: true,
-        logEvents: ['response']
+      prettyPrint: true,
+      logEvents: ['response']
     }
   })
+
+  // Enable pagination
+  await server.register({plugin: require('hapi-pagination'), options: paginationOptions})
 
   // Enabled JWT auth
   await server.register(require('hapi-auth-jwt2'))
@@ -57,4 +89,4 @@ const createServer = async function(routes = [], startServer = true) {
   return server
 }
 
-module.exports = { createServer }
+module.exports = { createServer, startServer }

@@ -1,8 +1,8 @@
 'use strict'
 
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 const Schema = mongoose.Schema
-const SchemaStatics = require('../SchemaStatics')
 const Router = require('../Router')
 
 const ProductSchema = new Schema({
@@ -19,11 +19,12 @@ const ProductSchema = new Schema({
   }
 }, { collection: 'products' })
 
-ProductSchema.statics = Object.assign({}, SchemaStatics)
+ProductSchema.plugin(mongoosePaginate)
 
 const Product = mongoose.model('Product', ProductSchema)
 const ProductRouter = new Router(Product, '/products')
 
+ProductRouter.makePublic(['get', 'getOne'])
 ProductRouter.makePrivate(['post', 'put', 'patch', 'delete'])
 
 module.exports = { Product, ProductRouter }
