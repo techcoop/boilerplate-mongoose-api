@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose')
 const MongoMemoryServer = require('mongodb-memory-server').default
-const hapi = require('hapi')
+const hapi = require('@hapi/hapi')
 
 let mongoServer
 const mockDB = async () => {

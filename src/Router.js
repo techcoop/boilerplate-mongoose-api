@@ -1,5 +1,6 @@
 'use strict'
 
+// TODO improve test coverage
 class Router {
   constructor(Model, path, types = ['get', 'getOne', 'post', 'put', 'patch', 'delete']) {
     this.Model = Model
@@ -68,20 +69,98 @@ class Router {
         hydrated[param] = params[param]
       }
     })
-
     return hydrated
   }
 
+  hydrateQuery(query, params) {
+    const hydrated = Object.assign({}, query)
+    const fields = this.Model.schema.paths
+
+    if (!params) {
+      return hydrated
+    }
+
+    Object.keys(params).forEach((param) => {
+      if (fields[param]) {
+        hydrated[param] = params[param]
+      }
+    })
+    
+    return hydrated
+  }
+
+  filterQuery(query) {
+    if (!query) {
+      return query
+    }
+
+    const newQuery = {}
+    Object.keys(query).forEach((field) => {
+      if (query[field].startsWith('*') || query[field].endsWith('*')) {
+        // TODO handle multiple matches seperated with ,
+        newQuery[field] = { '$regex' : query[field].replace(new RegExp('\\*', 'g'), '.*'), '$options' : 'i' }
+      } else {
+        newQuery[field] = query[field].split(',')
+      }
+    })
+    
+    return newQuery
+  }
+
   async getListHandler(request, h) {
-    const { limit, page, pagination, ...rest } = request.query
+    const { 
+      limit,
+      page,
+      sortDir,
+      sortField,
+      populate,
+      pagination,
+      ...rest } = request.query
+
+    const query = this.hydrateQuery(this.filterQuery(rest), request.params)
+    
     if (pagination) {
       // TODO add handling for other options? populate, lean, etc?
       // https://github.com/WebGangster/mongoose-paginate-v2
-      const results = await this.Model.paginate(rest, {limit, page})
+      let results
+      let options = {limit, page}
+      if (!sortField && !sortDir) {
+        options.sort = { createdAt: -1 }
+      } else {
+        options.sort = { [sortField]: sortDir }
+      }
+
+      if (populate) {
+        //options.populate = populate.split(',')
+        options.populate = populate.split(',').map((item) => (
+          this.getPopulate(item.split('.'))
+        ))
+      }
+      
+      results = await this.Model.paginate(query, options)
+      
       return h.response({results: results.docs, totalCount: results.totalDocs});
     } else {
-      // TODO leave this? paginate will be set for all routes anyways?
-      return await this.find(rest)
+      if (populate) {
+        const populateOptions = populate.split(',').map((item) => (
+          this.getPopulate(item.split('.'))
+        ))
+
+        return await this.Model.find(query).populate(populateOptions)
+      } else {
+        return await this.Model.find(query)
+      }
+    }
+  }
+
+  getPopulate(parts) {
+    if (parts.length === 1) {
+      return { path: parts[0] }
+    } else {
+      return { 
+        path: parts[0],
+        populate: this.getPopulate(parts.slice(1))
+      }
     }
   }
 

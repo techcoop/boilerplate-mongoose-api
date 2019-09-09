@@ -24,6 +24,7 @@ const validateUser = async (decoded, request, h) => {
   }
 
   decoded._id = user._id
+  decoded.user = user
 
   return { isValid: true, credentials: decoded }
 }

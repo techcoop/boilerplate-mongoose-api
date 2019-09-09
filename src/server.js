@@ -1,6 +1,6 @@
 'use strict'
 
-const hapi = require('hapi')
+const hapi = require('@hapi/hapi')
 const jwksRsa = require('jwks-rsa')
 const validateUser = require('./middlewares/users').validateUser
 
@@ -13,30 +13,38 @@ const paginationOptions = {
     location: 'header'
   },
   routes: {
-    include: ['*'],
+    include: [
+      '*',
+      // Instead of * you can enable pagination by route pattern
+      //'/users',
+      //'/products',
+      //'/users/{_user}/products'
+    ],
     exclude: []
   }
 }
 
-const createServer = async function(routes = [], startServer = true) {
-  // TODO need tests to cover cors and pagination
-  const server = hapi.server({
+const createServer = () => {
+  return hapi.server({
     host: process.env.HOST,
     port: process.env.PORT,
     routes: {
       cors: {
         origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : undefined,
-        exposedHeaders: ['Content-Range', 'Link']
+        additionalExposedHeaders: ['Content-Range', 'Link'],
+        additionalHeaders: ['Content-Range', 'Link']
       }
     }
   })
+}
 
+const startServer = async function(routes = [], server = createServer(), startServer = true) {
   // Enable logging
   await server.register({
     plugin: require('hapi-pino'),
     options: {
-        prettyPrint: true,
-        logEvents: ['response']
+      prettyPrint: true,
+      logEvents: ['response']
     }
   })
 
@@ -81,4 +89,4 @@ const createServer = async function(routes = [], startServer = true) {
   return server
 }
 
-module.exports = { createServer }
+module.exports = { createServer, startServer }

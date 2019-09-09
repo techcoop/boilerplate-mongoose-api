@@ -24,27 +24,28 @@
     "boilerplate"
   ],
   "dependencies": {
+    "@hapi/hapi": "^18.1.0",
+    "@hapi/joi": "^15.1.1",
     "dotenv": "^6.2.0",
-    "hapi": "^18.1.0",
     "hapi-auth-jwt2": "^8.3.0",
-    "hapi-pagination": "^2.1.0",
-    "hapi-pino": "^5.4.1",
-    "joi": "^14.3.1",
+    "hapi-pagination": "^3.0.0",
+    "hapi-pino": "^6.1.0",
     "jwks-rsa": "^1.4.0",
-    "mongodb-memory-server": "^3.1.1",
     "mongoose": "^5.4.14",
     "mongoose-paginate-v2": "^1.0.24"
   },
   "devDependencies": {
-    "code": "^5.2.4",
-    "lab": "^18.0.2",
+    "@hapi/code": "^6.0.0",
+    "@hapi/lab": "^20.2.2",
+    "mongodb": "^3.3.2",
+    "mongodb-memory-server": "^3.1.1",
     "nodemon": "^1.18.10",
     "standard-version": "^4.0.0"
   },
   "scripts": {
     "start": "nodemon src/index.js --watch src",
     "test": "nodemon --exec yarn test:run --watch src",
-    "test:run": "lab src --pattern test --assert code --leaks",
+    "test:run": "lab src --pattern test --assert @hapi/code --leaks",
     "release": "standard-version"
   }
 }
