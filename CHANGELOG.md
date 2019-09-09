@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/techcoop/boilerplate-mongoose-api/compare/v0.1.3...v0.2.0) (2019-09-09)
+
+
+### Features
+
+* Release/0.2.0 ([#5](https://github.com/techcoop/boilerplate-mongoose-api/issues/5)) ([e2c7a7f](https://github.com/techcoop/boilerplate-mongoose-api/commit/e2c7a7f))
+
+
+
 <a name="0.1.3"></a>
 ## [0.1.3](https://github.com/techcoop/boilerplate-mongoose-api/compare/v0.1.2...v0.1.3) (2019-03-05)
 
